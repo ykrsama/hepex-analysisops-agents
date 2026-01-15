@@ -20,24 +20,26 @@ def inspect_root_schema_tool(
     """
     schema = {}
 
-    with uproot.open(file_path) as f:
-        for key, classname in f.classnames().items():
-            # uproot TTree classname usually contains "TTree"
-            if "TTree" not in classname:
-                continue
+    try:
+        with uproot.open(file_path) as f:
+            for key, classname in f.classnames().items():
+                if "TTree" not in classname:
+                    continue
 
-            try:
-                tree = f[key]
-                branches = list(tree.keys())
-                schema[key] = {
-                    "n_branches": len(branches),
-                    "branches": branches[:max_branches_per_tree],
-                    "truncated": len(branches) > max_branches_per_tree,
-                }
-            except Exception as e:
-                schema[key] = {
-                    "error": str(e)
-                }
+                try:
+                    tree = f[key]
+                    branches = list(tree.keys())
+                    schema[key] = {
+                        "n_branches": len(branches),
+                        "branches": branches[:max_branches_per_tree],
+                        "truncated": len(branches) > max_branches_per_tree,
+                    }
+                except Exception as e:
+                    schema[key] = {
+                        "error": str(e)
+                    }
+    except Exception as e:
+        return {"status": "error", "error": f"Failed to open file '{file_path}': {e}. If the file is not found, try using download_atlas_data_tool."}
 
     return schema
 
@@ -72,14 +74,17 @@ def load_kinematics_tool(
     if "charge" in branches:
         branch_names.append(branches["charge"])
 
-    with uproot.open(file_path) as f:
-        tree = f[tree_name]
-        arrs = tree.arrays(
-            branch_names,
-            entry_start=entry_start,
-            entry_stop=entry_stop,
-            library="ak",
-        )
+    try:
+        with uproot.open(file_path) as f:
+            tree = f[tree_name]
+            arrs = tree.arrays(
+                branch_names,
+                entry_start=entry_start,
+                entry_stop=entry_stop,
+                library="ak",
+            )
+    except Exception as e:
+        return {"status": "error", "error": f"Failed to load kinematics from '{file_path}': {e}. If the file is not found, try using download_atlas_data_tool."}
 
     pt = arrs[branches["pt"]]
     eta = arrs[branches["eta"]]

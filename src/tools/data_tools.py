@@ -171,7 +171,7 @@ def download_atlas_data_tool(
     release: str = "2025e-13tev-beta",
     dataset: str = "data",
     protocol: str = "https",
-    output_dir: str = "/tmp/atlas_data",
+    output_dir: str = "",  # Will use HEPEX_DATA_DIR if empty
     max_files: int = 1,
     workers: int = 4,
 ) -> Dict[str, Any]:
@@ -225,11 +225,18 @@ def download_atlas_data_tool(
         }
 
     try:
+        # Resolve base_dir: use param if set, else HEPEX_DATA_DIR, else fallback
+        base_dir = output_dir if output_dir and output_dir.strip() else os.environ.get("HEPEX_DATA_DIR", "/tmp/atlas_data")
+        
+        # Build full path: base_dir/release/dataset/skim (matches Green Agent structure)
+        full_output_dir = os.path.join(base_dir, release, dataset, skim)
+        
         atom.set_release(release)
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(full_output_dir, exist_ok=True)
 
         # Get URL list
         files_list = atom.get_urls(dataset, skim, protocol=protocol, cache=False)
+        
         urls = []
         for entry in sorted(files_list):
             # atlasopenmagic returns "root::https://.../file.root"
@@ -248,7 +255,7 @@ def download_atlas_data_tool(
                 "n_ok": 0,
                 "n_fail": 0,
                 "n_requested": 0,
-                "output_dir": os.path.abspath(output_dir),
+                "output_dir": os.path.abspath(full_output_dir),
                 "release": release,
                 "dataset": dataset,
                 "skim": skim,
@@ -259,7 +266,7 @@ def download_atlas_data_tool(
         ok_paths: List[str] = []
 
         with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
-            futs = [ex.submit(_ensure_one_file, url, output_dir, verbose=False) for url in urls]
+            futs = [ex.submit(_ensure_one_file, url, full_output_dir, verbose=False) for url in urls]
             for fut in as_completed(futs):
                 r = fut.result()
                 results.append(r)
@@ -281,7 +288,7 @@ def download_atlas_data_tool(
             "n_ok": n_ok,
             "n_fail": n_fail,
             "n_requested": len(urls),
-            "output_dir": os.path.abspath(output_dir),
+            "output_dir": os.path.abspath(full_output_dir),
             "release": release,
             "dataset": dataset,
             "skim": skim,
@@ -357,3 +364,23 @@ def list_local_root_files_tool(
             "directory": directory,
             "notes": f"Error listing files: {type(e).__name__}: {e}",
         }
+
+
+def test_download_atlas_data_tool():
+    # construct json 
+    kwargs = {
+        "skim": "2muons",
+        "release": "2025e-13tev-beta",
+        "dataset": "data",
+        "protocol": "https", # Must be https for urllib download
+        "output_dir": "/tmp/atlas_data",
+        "max_files": 1,
+        "workers": 4,
+    }
+
+    print(f"Testing download_atlas_data_tool with: {kwargs}")
+    result = download_atlas_data_tool(**kwargs)
+    print("Result:", result)
+
+if __name__ == "__main__":
+    test_download_atlas_data_tool()

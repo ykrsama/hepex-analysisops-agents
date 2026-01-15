@@ -13,6 +13,7 @@ dependencies = [
     "awkward>=2.0.0",
     "vector>=1.7.0",
     "ipykernel>=7.1.0",
+    "atlasopenmagic>=1.8.0",
 ]
 
 [project.optional-dependencies]
