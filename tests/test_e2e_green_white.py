@@ -44,8 +44,8 @@ from a2a.types import MessageSendParams, SendMessageRequest
 
 WHITE_AGENT_PORT = 9009
 GREEN_AGENT_PORT = 9010  # Use different port to avoid conflicts
-BENCHMARK_DIR = Path(__file__).parent.parent / "hepex-analysisops-benchmark"
-DATA_DIR = Path(__file__).parent.parent / "data"
+BENCHMARK_DIR = Path(__file__).parent.parent.parent / "hepex-analysisops-benchmark"
+DATA_DIR = Path(__file__).parent.parent.parent / "data"
 
 
 # --------------------------------------------------------------------------
@@ -363,7 +363,7 @@ async def test_e2e_green_calls_white_for_zpeak(green_server_with_white_agent):
     resp_json = response.model_dump(mode="json", exclude_none=True)
     print(f"\nGreen agent response received!")
     print(f"Response type: {type(response)}")
-    
+
     # Verify artifacts were created
     runs_root = data_dir / "runs"
     assert runs_root.exists(), f"runs/ directory not created at {runs_root}"

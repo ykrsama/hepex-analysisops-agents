@@ -14,6 +14,7 @@ dependencies = [
     "vector>=1.7.0",
     "ipykernel>=7.1.0",
     "atlasopenmagic>=1.8.0",
+    "anthropic>=0.87.0",
 ]
 
 [project.optional-dependencies]
