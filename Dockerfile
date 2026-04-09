@@ -4,6 +4,7 @@ RUN adduser agent
 USER agent
 WORKDIR /home/agent
 
+# Install OpenHarness
 RUN curl -fsSL https://raw.githubusercontent.com/HKUDS/OpenHarness/main/scripts/install.sh | bash -s -- --from-source --with-channels
 
 ENV PATH="/home/agent/.openharness-venv/bin:$PATH"

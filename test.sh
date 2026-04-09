@@ -47,4 +47,4 @@ build_and_run_purple_agnet
 
 wait_for_port 9009 30
 
-uv run pytest tests/test_e2e_green_white.py -v -s
+uv run pytest tests/test_e2e_green_white_hbb.py -v -s
