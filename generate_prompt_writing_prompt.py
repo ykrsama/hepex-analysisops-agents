@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 def generate_prompt():
-    ref_nb = "ttbar_analysis.py"
+    ref_nb = "wz3l_analysis.py"
     output_file = "prompt_writing_prompt.md"
     agents_file = "AGENTS.md"
     skills_dir = "skills"

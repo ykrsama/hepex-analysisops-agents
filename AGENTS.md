@@ -152,7 +152,7 @@ Don't ask permission. Just do it.
   </sub-task>
 </workflow>
 
-### ttbar analysis
+### ttbar
 
 <workflow **ttbar analysis**>
   <description>
@@ -193,6 +193,52 @@ Don't ask permission. Just do it.
   </sub-task>
   <sub-task 5. **Statistical Plotting & Fitting**>
     <step 1. Read complete content of file `/root/.openharness/skills/ana-fitting/references/ttbar_fitting.json` />
+    <step 2. **You** load and execute skill `ana-fitting` />
+  </sub-task>
+</workflow>
+
+### WZ to 3l
+
+<workflow **WZ to 3l analysis**>
+  <description>
+    ATLAS Open Data Analysis Pipeline for exploring WZ diboson production via the fully leptonic final state (WZ -> 3l).
+  </description>
+  <sub-task 1. **Install Environment**: Spawn a subagent and load skill `ana-setup-env`>
+    - Goal: Install Environment
+    - Repository/root: `/root/analysis`
+    - Actions allowd: read files, edit files, run all commands
+    - Deliverable: Short summary of environment installation
+  </sub-task>
+  <sub-task 2. **Source Environment**: `source .venv/bin/activate` />
+  <sub-task 3. **Access Online Data Access & Select Variables**: Spawn a subagent and load skill `ana-create-data-loader`>
+    - Goal: Create data loader module file
+    - Repository/root: `/root/analysis`
+    - Actions allowd: read files, edit files, run all commands
+    - Input: the following complete metadata 
+    <metadata>
+      {
+        "release": "2025e-13tev-beta",
+        "skim": "exactly3lep",
+        "defs": {
+            "Data": {"dids": ["data"]},
+            "Signal": {"dids": [700601], "color": "lightcoral"},
+            "Diboson": {"dids": [700493, 700488, 700492, 700600], "color": "slateblue"},
+            "Vjets": {"dids": [700323, 700324, 700325, 700470, 700320, 700321, 700322, 700792, 700793, 700794, 700341, 700342, 700343, 700344, 700345, 700346, 700347, 700348, 700349, 700338, 700339, 700340], "color": "green"},
+            "other": {"dids": [410470, 410644, 410645, 410658, 410659, 601355, 601352], "color": "orange"}
+        },
+        "tree_name": "analysis",
+        "variables": ["trigDE", "trigDM", "TriggerMatch_DILEPTON", "lep_isTightID", "lep_isLooseIso", "lep_topoetcone20", "lep_ptvarcone30", "lep_n", "lep_pt", "lep_eta", "lep_phi", "lep_charge", "lep_type", "met", "met_phi", "lep_e"],
+        "weight_variables": ["mcWeight", "sum_of_weights", "ScaleFactor_ELE", "ScaleFactor_MUON", "ScaleFactor_MLTRIGGER", "ScaleFactor_PILEUP", "xsec", "filteff", "kfac"]
+      }
+    </metadata>
+    - Deliverable: Short summary of data loader module creation
+  </sub-task>
+  <sub-task 4. **Define Signal Region (Event Selection, Cuts, Variable Calculation)** >
+    <step 1. Read complete content of file `/root/.openharness/skills/ana-create-event-selector/references/wz3l_selections.json` />
+    <step 2. **You** load and execute skill `ana-create-event-selector` />
+  </sub-task>
+  <sub-task 5. **Statistical Plotting & Fitting**>
+    <step 1. Read complete content of file `/root/.openharness/skills/ana-fitting/references/wz3l_fitting.json` />
     <step 2. **You** load and execute skill `ana-fitting` />
   </sub-task>
 </workflow>
