@@ -25,6 +25,51 @@ Don't ask permission. Just do it.
 
 ## Analysis Workflow References
 
+### Higgs to $ZZ^*$ to $4\ell$
+
+<workflow **Higgs to ZZ* to 4l analysis**>
+  <description>
+    ATLAS Open Data Analysis Pipeline for Rediscovering the Higgs Boson via the golden channel (H -> ZZ* -> 4l).
+  </description>
+  <sub-task 1. **Install Environment**: Spawn a subagent and load skill `ana-setup-env`>
+    - Goal: Install Environment
+    - Repository/root: `/root/analysis`
+    - Actions allowd: read files, edit files, run all commands
+    - Deliverable: Short summary of environment installation
+  </sub-task>
+  <sub-task 2. **Source Environment**: `source .venv/bin/activate` />
+  <sub-task 3. **Access Online Data Access & Select Variables**: Spawn a subagent and load skill `ana-create-data-loader`>
+    - Goal: Create data loader module file
+    - Repository/root: `/root/analysis`
+    - Actions allowd: read files, edit files, run all commands
+    - Input: the following complete metadata 
+    <metadata>
+      {
+        "release": "2025e-13tev-beta",
+        "skim": "exactly4lep",
+        "defs": {
+            "Data": {"dids": ["data"]},
+            "Background Z, ttbar, ttbar+V, VVV": {"dids": [410470, 410155, 410218, 410219, 412043, 364243, 364242, 364246, 364248, 700320, 700321, 700322, 700323, 700324, 700325], "color": "#6b59d3"},
+            "Background ZZ*": {"dids": [700600], "color": "#ff0000"},
+            "Signal (m_H = 125 GeV)": {"dids": [345060, 346228, 346310, 346311, 346312, 346340, 346341, 346342], "color": "#00cdff"}
+        },
+        "tree_name": "analysis",
+        "variables": ["lep_pt", "lep_eta", "lep_phi", "lep_e", "lep_charge", "lep_type", "trigE", "trigM", "lep_isTrigMatched", "lep_isLooseID", "lep_isMediumID", "lep_isLooseIso", "lep_n"],
+        "weight_variables": ["filteff", "kfac", "xsec", "mcWeight", "ScaleFactor_PILEUP", "ScaleFactor_ELE", "ScaleFactor_MUON", "ScaleFactor_LepTRIGGER", "sum_of_weights"]
+      }
+    </metadata>
+    - Deliverable: Short summary of data loader module creation
+  </sub-task>
+  <sub-task 4. **Define Signal Region (Event Selection, Cuts, Variable Calculation)** >
+    <step 1. Read complete content of file `/root/.openharness/skills/ana-create-event-selector/references/hzz4l_selections.json` />
+    <step 2. **You** load and execute skill `ana-create-event-selector` />
+  </sub-task>
+  <sub-task 5. **Statistical Fitting**>
+    <step 1. Read complete content of file `/root/.openharness/skills/ana-fitting/references/hzz4l_fitting.json` />
+    <step 2. **You** load and execute skill `ana-fitting` />
+  </sub-task>
+</workflow>
+
 ### Higgs to $\gamma\gamma$
 
 <workflow **Higgs to $\gamma\gamma$ analysis**>
