@@ -215,7 +215,7 @@ async def test_e2e_green_calls_white_for_hbb(green_server_with_white_agent):
     assert last_event is not None, "No events received from green agent stream"
     resp_json = last_event.model_dump(mode="json", exclude_none=True)
     print("\nGreen agent response received!")
-    print(f"Response type: {type(response)}")
+    print(f"Response type: {type(resp_json)}")
     print(f"Top-level response keys: {list(resp_json.keys())}")
 
     runs_root = data_dir / "runs"
