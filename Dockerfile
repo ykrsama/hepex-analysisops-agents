@@ -31,7 +31,7 @@ WORKDIR /root
 
   RUN uv sync
 
-  ENV PATH="/Users/xuliang/.openharness-venv/bin:$PATH"
+  ENV PATH="/root/.openharness-venv/bin:$PATH"
 
   ENTRYPOINT ["uv", "run", "src/server.py", "--log-level", "DEBUG"]
   CMD ["--host", "0.0.0.0"]
