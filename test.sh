@@ -28,7 +28,7 @@ build_and_run_purple_agnet() {
     echo "(Re)Starting purple agent container..."
 
     mount_data_dir=/Users/xuliang/ATLAS/MyHbbAnalysis/cache
-    mount_in_container=/home/agent/analysis/cache
+    mount_in_container=/root/analysis/cache
     echo "Mount data dir ${mount_data_dir} to: ${mount_in_container}"
     docker rm -f hepex-purple-agent
     docker run -p 9009:9009 \
