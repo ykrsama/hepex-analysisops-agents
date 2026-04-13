@@ -26,9 +26,14 @@ build_and_run_purple_agnet() {
     docker build -t hepex-purple-agent:local .
 
     echo "(Re)Starting purple agent container..."
+
+    mount_data_dir=/Users/xuliang/ATLAS/MyHbbAnalysis/cache
+    mount_in_container=/home/agent/analysis/cache
+    echo "Mount data dir ${mount_data_dir} to: ${mount_in_container}"
     docker rm -f hepex-purple-agent
     docker run -p 9009:9009 \
       -d --name hepex-purple-agent \
+      -v "$mount_data_dir":"${mount_in_container}" \
       --add-host=host.docker.internal:host-gateway \
       -e OPENAI_API_KEY=$OPENAI_API_KEY \
       -e http_proxy=http://host.docker.internal:7890 \

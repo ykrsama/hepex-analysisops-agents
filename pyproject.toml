@@ -3,10 +3,9 @@ name = "hepex-analysisops-agents"
 version = "0.1.0"
 description = "HEPEx AnalysisOps Agents"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "a2a-sdk[http-server]>=0.3.20",
-    "google-adk>=1.22.0",
     "scipy>=1.16.3",
     "uvicorn>=0.38.0",
     "uproot>=5.0.0",
@@ -14,7 +13,6 @@ dependencies = [
     "vector>=1.7.0",
     "ipykernel>=7.1.0",
     "atlasopenmagic>=1.8.0",
-    "anthropic>=0.87.0",
 ]
 
 [project.optional-dependencies]
