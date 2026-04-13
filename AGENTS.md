@@ -152,6 +152,51 @@ Don't ask permission. Just do it.
   </sub-task>
 </workflow>
 
+### ttbar analysis
+
+<workflow **ttbar analysis**>
+  <description>
+    ATLAS Open Data Analysis Pipeline for Rediscovering the Top-Antitop Quark Pair Production via the semileptonic decay channel.
+  </description>
+  <sub-task 1. **Install Environment**: Spawn a subagent and load skill `ana-setup-env`>
+    - Goal: Install Environment
+    - Repository/root: `/root/analysis`
+    - Actions allowd: read files, edit files, run all commands
+    - Deliverable: Short summary of environment installation
+  </sub-task>
+  <sub-task 2. **Source Environment**: `source .venv/bin/activate` />
+  <sub-task 3. **Access Online Data Access & Select Variables**: Spawn a subagent and load skill `ana-create-data-loader`>
+    - Goal: Create data loader module file
+    - Repository/root: `/root/analysis`
+    - Actions allowd: read files, edit files, run all commands
+    - Input: the following complete metadata 
+    <metadata>
+      {
+        "release": "2025e-13tev-beta",
+        "skim": "1LMET30",
+        "defs": {
+            "Data": {"dids": ["data"]},
+            "Signal ttbar": {"dids": [601495, 410081, 410470], "color": "orange"},
+            "Background single_top": {"dids": [601355, 601487, 601627, 601628, 601631, 601761, 601762, 601763, 601764], "color": "cyan"},
+            "Background diboson": {"dids": [700488, 700489, 700490, 700491, 700492, 700493, 700495, 700496], "color": "blue"}
+        },
+        "tree_name": "analysis",
+        "variables": ["trigE", "trigM", "lep_isTrigMatched", "lep_n", "lep_pt", "lep_eta", "lep_phi", "lep_e", "lep_type", "met", "met_phi", "jet_n", "jet_pt", "jet_eta", "jet_phi", "jet_e", "jet_btag_quantile"],
+        "weight_variables": ["mcWeight", "ScaleFactor_ElTRIGGER", "ScaleFactor_MuTRIGGER", "ScaleFactor_FTAG", "ScaleFactor_ELE", "ScaleFactor_MUON", "ScaleFactor_PILEUP", "sum_of_weights", "xsec", "filteff", "kfac"]
+      }
+    </metadata>
+    - Deliverable: Short summary of data loader module creation
+  </sub-task>
+  <sub-task 4. **Define Signal Region (Event Selection, Cuts, Variable Calculation)** >
+    <step 1. Read complete content of file `/root/.openharness/skills/ana-create-event-selector/references/ttbar_selections.json` />
+    <step 2. **You** load and execute skill `ana-create-event-selector` />
+  </sub-task>
+  <sub-task 5. **Statistical Plotting & Fitting**>
+    <step 1. Read complete content of file `/root/.openharness/skills/ana-fitting/references/ttbar_fitting.json` />
+    <step 2. **You** load and execute skill `ana-fitting` />
+  </sub-task>
+</workflow>
+
 ### Higgs to bb
 
 <workflow **Higgs to bb analysis**>

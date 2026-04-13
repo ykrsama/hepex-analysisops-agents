@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 def generate_prompt():
-    ref_nb = "hmumu.py"
+    ref_nb = "ttbar_analysis.py"
     output_file = "prompt_writing_prompt.md"
     agents_file = "AGENTS.md"
     skills_dir = "skills"
@@ -12,7 +12,7 @@ def generate_prompt():
         # 0. 处理Jupyter Notebook
         # ==========================================
         out_f.write("## Jupyter Notebook\n```\n")
-        with open("skills/sm-ana-aod/ana-fitting/references/" + ref_nb, 'r', encoding='utf-8') as nb_f:
+        with open("skills/sm-ana-aod/ana-fitting/debug/" + ref_nb, 'r', encoding='utf-8') as nb_f:
             for line in nb_f:
                 out_f.write(line)
 
