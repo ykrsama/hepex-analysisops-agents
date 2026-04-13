@@ -48,6 +48,7 @@ class WhiteAgent:
                     # Construct the command: oh --permission-mode --print --system-prompt "..." "task"
                     cmd = [
                         "oh",
+                        "--permission-mode", "full_auto",
                         "--dangerously-skip-permissions",
                         "--system-prompt", self.system_prompt,
                         "--print", prompt 
@@ -60,6 +61,13 @@ class WhiteAgent:
                     )
                     
                     stdout, stderr = await process.communicate()
+
+                    # Write stdout and stderr to a file for debugging
+                    with open("debug_oh_output.log", "a", encoding="utf-8") as f:
+                        f.write(f"--- Attempt {attempt + 1} ---\n")
+                        f.write(f"STDOUT:\n{stdout.decode(errors='replace')}\n")
+                        f.write(f"STDERR:\n{stderr.decode(errors='replace')}\n")
+                        f.write("="*40 + "\n")
                     
                     if process.returncode == 0:
                         final_text = stdout.decode().strip()
